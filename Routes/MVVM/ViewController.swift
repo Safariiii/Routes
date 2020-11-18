@@ -9,9 +9,9 @@
 fileprivate let cellID = "cell"
 fileprivate let vcTitle = "Маршруты"
 fileprivate let filterImage = "slider.horizontal.3"
+fileprivate let errorText = "Не удалось загрузить данные. Проверьте соединение и повторите попытку позже."
 
 import UIKit
-import RxSwift
 
 class RoutesViewController: UIViewController {
     
@@ -55,6 +55,9 @@ class RoutesViewController: UIViewController {
     func initViewModel() {
         guard let viewModel = viewModel else {
             return
+        }
+        viewModel.subscribeToErrors { [weak self] in
+            self?.setupErrorMessage()
         }
         viewModel.subscribeToUpdates { [weak self] in
             self?.collectionView.reloadData()
@@ -105,6 +108,33 @@ class RoutesViewController: UIViewController {
         collectionView.register(RoutesCell.self, forCellWithReuseIdentifier: cellID)
         collectionView.dataSource = self
         collectionView.delegate = self
+    }
+    
+    lazy var errorMessage: PaddingLabel = {
+        let label = PaddingLabel()
+        label.text = errorText
+        label.numberOfLines = 0
+        label.backgroundColor = .darkGray
+        label.layer.cornerRadius = 7
+        label.layer.masksToBounds = true
+        label.textColor = .white
+        label.alpha = 0
+        return label
+    }()
+    
+    func setupErrorMessage() {
+        view.addSubview(errorMessage)
+        errorMessage.setupAnchors(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, centerX: view.centerXAnchor, centerY: view.centerYAnchor, padding: .init(top: 0, left: 40, bottom: 0, right: -40))
+        errorMessage.heightAnchor.constraint(equalToConstant: 90).isActive = true
+        UIView.animate(withDuration: 0.5, delay: 1, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveLinear, animations: {
+            self.errorMessage.alpha = 1
+        }) { _ in
+            UIView.animate(withDuration: 0.5, delay: 3, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveLinear, animations: {
+                self.errorMessage.alpha = 0
+            }) { _ in
+                self.errorMessage.removeFromSuperview()
+            }
+        }
     }
 }
 

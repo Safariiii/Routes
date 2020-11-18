@@ -7,12 +7,13 @@
 //
 
 import UIKit
-import CoreData
 
 class CacheService {
     
     static let shared = CacheService()
-    private init() {}
+    private init() {
+        
+    }
     
     private var images: [String: Foundation.Data] = [:]
     

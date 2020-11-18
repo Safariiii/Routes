@@ -13,15 +13,17 @@ class DataFetcher {
     
     var nextPage: String?
 
-    func fetchData(url: String, completion: @escaping (([Route]) -> Void)) {
+    func fetchData(url: String, completion: @escaping (([Route]) -> Void), error: @escaping (() -> Void)) {
         if isConnected(url: url) {
             guard let url = URL(string: url) else {
+                error()
                 return
             }
             Alamofire.request(url, method: .get).responseData { (response) in
                 if response.result.isSuccess {
                     if let responseData = response.result.value {
                         guard let routes = self.parseJSON(responseData) else {
+                            error()
                             return
                         }
                         completion(routes)
@@ -29,7 +31,7 @@ class DataFetcher {
                 }
             }
         } else {
-            print("no connection")
+            error()
         }
     }
     

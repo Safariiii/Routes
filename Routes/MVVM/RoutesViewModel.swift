@@ -14,15 +14,25 @@ class RoutesViewModel {
     let disposeBag = DisposeBag()
     let offsetSubject = PublishSubject<Bool>()
     var fetchSubject = PublishSubject<[Route]>()
+    var errorSubject = ReplaySubject<Bool>.create(bufferSize: 1)
     var routesArray = [Route(), Route()]
     let fetcher = DataFetcher()
     var isUpdating = false
     
     init() {
-        fetcher.fetchData(url: "https://murmansk.travel/api/trips") { [weak self] (routes) in
+        fetcher.fetchData(url: "https://murmansk.travel/api/trips", completion: { [weak self] (routes) in
             self?.routesArray = []
             self?.fetchSubject.onNext(routes)
-        }
+        }, error: { [weak self] in
+            self?.errorSubject.onNext(true)
+        })
+    }
+    
+    func subscribeToErrors(completion: @escaping (() -> Void)) {
+        errorSubject.subscribe(onNext: { (error) in
+            completion()
+        }).disposed(by: disposeBag)
+        
     }
     
     func subscribeToUpdates(completion: @escaping (() -> Void)) {
@@ -38,9 +48,11 @@ class RoutesViewModel {
             return
         }
         isUpdating = true
-        self.fetcher.fetchData(url: nextURL) { [weak self] (routes) in
+        self.fetcher.fetchData(url: nextURL, completion: { [weak self] (routes) in
             self?.fetchSubject.onNext(routes)
-        }
+            }, error: { [weak self] in
+                self?.errorSubject.onNext(true)
+        })
     }
     
     func numberOfItemsInSection() -> Int {

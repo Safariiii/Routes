@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 struct RouteData: Decodable {
     let data: [Routes.Data]?
     let links: Links?

@@ -35,7 +35,6 @@ class RoutesCell: UICollectionViewCell {
         viewModel.subscribeToImageLoad { [weak self] in
             self?.imageView.image = viewModel.image
         }
-        
     }
     
     lazy var stackView: UIStackView = {
