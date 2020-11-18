@@ -11,19 +11,23 @@ fileprivate let vcTitle = "Маршруты"
 fileprivate let filterImage = "slider.horizontal.3"
 
 import UIKit
+import RxSwift
 
 class RoutesViewController: UIViewController {
     
     var viewModel: RoutesViewModel?
     var maxBarHeight: CGFloat?
     let minBarHeight = UINavigationController().navigationBar.frame.height
+    let minSizeImageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold, scale: .default)
+    let maxSizeImageConfig = UIImage.SymbolConfiguration(pointSize: 26, weight: .semibold, scale: .default)
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
         initViewModel()
         setupNavBar()
-        maxBarHeight = navigationController?.navigationBar.frame.height
+        
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -32,11 +36,19 @@ class RoutesViewController: UIViewController {
             return
         }
         if height == minBarHeight {
-            let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold, scale: .default)
-            rightBarButton.setPreferredSymbolConfiguration(imageConfig, forImageIn: .normal)
+            rightBarButton.setPreferredSymbolConfiguration(minSizeImageConfig, forImageIn: .normal)
         } else if Float(currentHeight) >= Float(maxHeight) {
-            let imageConfig = UIImage.SymbolConfiguration(pointSize: 26, weight: .semibold, scale: .default)
-            rightBarButton.setPreferredSymbolConfiguration(imageConfig, forImageIn: .normal)
+            rightBarButton.setPreferredSymbolConfiguration(maxSizeImageConfig, forImageIn: .normal)
+        }
+        guard let viewModel = viewModel else { return }
+        if viewModel.isUpdating {
+            return
+        }
+        let currentOffset = scrollView.contentOffset.y
+        let maximumOffset = scrollView.contentSize.height > scrollView.frame.size.height ? scrollView.contentSize.height - scrollView.frame.size.height : 0
+        let deltaOffset = maximumOffset - currentOffset
+        if deltaOffset < UIScreen.main.bounds.height * 2 {
+            viewModel.needToUpdate()
         }
     }
     
@@ -44,15 +56,9 @@ class RoutesViewController: UIViewController {
         guard let viewModel = viewModel else {
             return
         }
-        viewModel.fetchData(reloadCell: { [weak self] index in
-            DispatchQueue.main.async {
-                self?.collectionView.reloadItems(at: [IndexPath(row: index, section: 0)])
-            }
-            }, completion: { [weak self] in
-                DispatchQueue.main.async {
-                    self?.collectionView.reloadData()
-                }
-        })
+        viewModel.subscribeToUpdates { [weak self] in
+            self?.collectionView.reloadData()
+        }
     }
     
     func setupNavBar() {
@@ -61,6 +67,7 @@ class RoutesViewController: UIViewController {
         }
         title = vcTitle
         bar.prefersLargeTitles = true
+        maxBarHeight = bar.frame.height
         bar.addSubview(rightBarButton)
         rightBarButton.setupAnchors(top: nil, leading: nil, bottom: bar.bottomAnchor, trailing: bar.trailingAnchor, padding: .init(top: 0, left: 0, bottom: -15, right: -15))
     }
@@ -96,8 +103,8 @@ class RoutesViewController: UIViewController {
     func setupCollectionView() {
         view.addSubview(collectionView)
         collectionView.register(RoutesCell.self, forCellWithReuseIdentifier: cellID)
-        collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.delegate = self
     }
 }
 

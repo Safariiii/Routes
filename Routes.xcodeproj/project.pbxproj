@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		34D2541AD7CAE5B5A865A315 /* Pods_Routes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CA9B59ACEC6A445A758FD8B /* Pods_Routes.framework */; };
+		A06155712563BBF1000020C6 /* DataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06155702563BBF1000020C6 /* DataFetcher.swift */; };
+		A06155732563BF73000020C6 /* RouteData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06155722563BF73000020C6 /* RouteData.swift */; };
+		A06155752564CD0C000020C6 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06155742564CD0C000020C6 /* CacheService.swift */; };
 		A0E169832560AD5C005ECD1D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E169822560AD5C005ECD1D /* AppDelegate.swift */; };
 		A0E169852560AD5C005ECD1D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E169842560AD5C005ECD1D /* SceneDelegate.swift */; };
 		A0E169872560AD5C005ECD1D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E169862560AD5C005ECD1D /* ViewController.swift */; };
@@ -29,6 +32,9 @@
 		0DD9C3380558070A3F0E6B5D /* Pods-Routes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routes.release.xcconfig"; path = "Target Support Files/Pods-Routes/Pods-Routes.release.xcconfig"; sourceTree = "<group>"; };
 		27EA4E6EEB906510A139E78F /* Pods-Routes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routes.debug.xcconfig"; path = "Target Support Files/Pods-Routes/Pods-Routes.debug.xcconfig"; sourceTree = "<group>"; };
 		6CA9B59ACEC6A445A758FD8B /* Pods_Routes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Routes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A06155702563BBF1000020C6 /* DataFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataFetcher.swift; sourceTree = "<group>"; };
+		A06155722563BF73000020C6 /* RouteData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteData.swift; sourceTree = "<group>"; };
+		A06155742564CD0C000020C6 /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
 		A0E1697F2560AD5C005ECD1D /* Routes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Routes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0E169822560AD5C005ECD1D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A0E169842560AD5C005ECD1D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -60,6 +66,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A061556F2563BBD0000020C6 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A06155702563BBF1000020C6 /* DataFetcher.swift */,
+				A06155742564CD0C000020C6 /* CacheService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		A0E169762560AD5C005ECD1D = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +96,7 @@
 		A0E169812560AD5C005ECD1D /* Routes */ = {
 			isa = PBXGroup;
 			children = (
+				A061556F2563BBD0000020C6 /* Services */,
 				A0E169A525613467005ECD1D /* Views */,
 				A0E169A22560D28F005ECD1D /* Extensions */,
 				A0E169A12560D242005ECD1D /* MVVM */,
@@ -129,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				A0E169A9256161F1005ECD1D /* Route.swift */,
+				A06155722563BF73000020C6 /* RouteData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -265,12 +282,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A06155712563BBF1000020C6 /* DataFetcher.swift in Sources */,
 				A0E1699C2560B581005ECD1D /* RoutesRouter.swift in Sources */,
 				A0E169872560AD5C005ECD1D /* ViewController.swift in Sources */,
 				A0E169AA256161F1005ECD1D /* Route.swift in Sources */,
+				A06155752564CD0C000020C6 /* CacheService.swift in Sources */,
 				A0E169AC25632B9D005ECD1D /* RoutesCell+extensions.swift in Sources */,
 				A0E169A02560D224005ECD1D /* RoutesCellViewModel.swift in Sources */,
 				A0E1698D2560AD5C005ECD1D /* Routes.xcdatamodeld in Sources */,
+				A06155732563BF73000020C6 /* RouteData.swift in Sources */,
 				A0E1699A2560B080005ECD1D /* RoutesCell.swift in Sources */,
 				A0E169832560AD5C005ECD1D /* AppDelegate.swift in Sources */,
 				A0E169A725613481005ECD1D /* PaddingLabel.swift in Sources */,

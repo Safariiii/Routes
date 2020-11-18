@@ -24,16 +24,18 @@ class RoutesCell: UICollectionViewCell {
 
     func initViewModel(viewModel: RoutesCellViewModel) {
         backgroundColor = .white
-        
-        
         setupStackView()
         typeLabel.text = viewModel.routeType
         cityLabel.text = viewModel.city
         titleLabel.text = viewModel.title
-        ratingLabel.text = viewModel.rating
+        ratingLabel.text = ("\(viewModel.rating)")
         imageView.image = viewModel.image
         clockLabel.text = viewModel.duration
         setupShadow()
+        viewModel.subscribeToImageLoad { [weak self] in
+            self?.imageView.image = viewModel.image
+        }
+        
     }
     
     lazy var stackView: UIStackView = {

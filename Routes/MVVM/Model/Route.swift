@@ -9,22 +9,27 @@
 import UIKit
 
 struct Route {
+    var id: Int = 0
     var routeType: RouteType = .excursion
-    var image: UIImage = UIImage()
+    var imageURL: String = ""
     var city: String = ""
     var title: String = ""
-    var rating: String = ""
+    var rating: Int = 0
     var duration: String = ""
-    var isReal: Bool = false
 }
+
+
 
 enum RouteType: String {
     case excursion = "excursion"
+    case route = "route"
     
-    var titile: String {
+    var title: String {
         switch self {
         case .excursion:
             return "Экскурсия"
+        case .route:
+            return "Маршрут"
         }
     }
 }
